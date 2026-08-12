@@ -17,7 +17,7 @@ async function pollPrediction(apiToken: string, predictionId: string, timeoutMs 
     const res = await fetch(`${REPLICATE_API}/predictions/${predictionId}`, {
       headers: { Authorization: `Bearer ${apiToken}` },
     });
-    const data = await res.json() as Promise<any>;
+    const data = await res.json() as any;
     if (data.status === "succeeded") return data;
     if (data.status === "failed" || data.status === "canceled") {
       throw new Error(`Replicate prediction ${data.status}: ${data.error ?? "unknown error"}`);
@@ -48,7 +48,7 @@ export async function generateImage(apiToken: string, params: {
     }),
   });
   if (!createRes.ok) throw new Error(`Replicate create prediction failed: ${await createRes.text()}`);
-  let prediction = await createRes.json() as Promise<any>;
+  let prediction = await createRes.json() as any;
   if (prediction.status !== "succeeded") {
     prediction = await pollPrediction(apiToken, prediction.id);
   }
@@ -74,7 +74,7 @@ export async function generateVideo(apiToken: string, params: {
     }),
   });
   if (!createRes.ok) throw new Error(`Replicate video prediction failed: ${await createRes.text()}`);
-  const created = await createRes.json() as Promise<any>;
+  const created = await createRes.json() as any;
   const prediction = await pollPrediction(apiToken, created.id, 300_000);
   const videoUrl = Array.isArray(prediction.output) ? prediction.output[0] : prediction.output;
   return { videoUrl, cost: VIDEO_MODEL_COST_PER_SEC_INR * params.durationSeconds };

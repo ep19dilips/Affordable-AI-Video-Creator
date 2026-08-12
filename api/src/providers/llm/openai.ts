@@ -24,7 +24,7 @@ async function callOpenAI(apiKey: string, systemPrompt: string, userPrompt: stri
     }),
   });
   if (!res.ok) throw new Error(`OpenAI error ${res.status}: ${await res.text()}`);
-  const data = await res.json() as Promise<any>;
+  const data = await res.json() as any;
   return {
     text: data.choices[0].message.content,
     inputTokens: data.usage.prompt_tokens,

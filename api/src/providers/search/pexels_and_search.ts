@@ -9,7 +9,7 @@ export async function searchStockVideo(apiKey: string, query: string): Promise<{
     headers: { Authorization: apiKey },
   });
   if (!res.ok) throw new Error(`Pexels video search failed: ${res.status}`);
-  const data = await res.json() as Promise<any>;
+  const data = await res.json() as any;
   const video = data.videos?.[0];
   const file = video?.video_files?.find((f: any) => f.quality === "hd") ?? video?.video_files?.[0];
   return { videoUrl: file?.link ?? null, cost: 0 };
@@ -20,7 +20,7 @@ export async function searchStockImage(apiKey: string, query: string): Promise<{
     headers: { Authorization: apiKey },
   });
   if (!res.ok) throw new Error(`Pexels image search failed: ${res.status}`);
-  const data = await res.json() as Promise<any>;
+  const data = await res.json() as any;
   return { imageUrl: data.photos?.[0]?.src?.large ?? null, cost: 0 };
 }
 
@@ -35,7 +35,7 @@ export async function webSearch(apiKey: string, query: string): Promise<{
     body: JSON.stringify({ q: query }),
   });
   if (!res.ok) throw new Error(`Serper search failed: ${res.status}`);
-  const data = await res.json() as Promise<any>;
+  const data = await res.json() as any;
   const results = (data.organic ?? []).slice(0, 5).map((r: any) => ({
     title: r.title, url: r.link, snippet: r.snippet ?? "",
   }));
