@@ -1,0 +1,19 @@
+# Local development only — Railway provides managed Postgres/Redis in production,
+# this just mirrors that for `docker compose up` on your machine.
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: idea2video
+      POSTGRES_USER: idea2video
+      POSTGRES_PASSWORD: localdev
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+
+volumes:
+  pgdata:
